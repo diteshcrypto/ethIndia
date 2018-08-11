@@ -9,6 +9,7 @@ import CreateLoanRequestContainer from "../../../containers/CreateLoanRequest";
 import TokensContainer from "../../../containers/Tokens";
 import LoanRequestContainer from "../../../containers/LoanRequest";
 import HomeContainer from '../../../containers/homeContainer'
+import ProjectContainer from '../../../containers/projectContainer'
 
 // Styling
 import "./Main.css";
