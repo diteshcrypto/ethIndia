@@ -8,6 +8,7 @@ import LoanRequestsContainer from "../../../containers/LoanRequests";
 import CreateLoanRequestContainer from "../../../containers/CreateLoanRequest";
 import TokensContainer from "../../../containers/Tokens";
 import LoanRequestContainer from "../../../containers/LoanRequest";
+import HomeContainer from '../../../containers/homeContainer'
 
 // Styling
 import "./Main.css";
@@ -19,11 +20,13 @@ class Main extends Component {
             <main className="Main">
                 <Grid>
                     <Switch>
-                        <Route path="/" exact={true} component={LoanRequestsContainer} />
+                        {/* <Route path="/" exact={true} component={LoanRequestsContainer} /> */}
+                        <Route path="/" exact={true} component={HomeContainer} />
                         <Route path="/create" component={CreateLoanRequestContainer} />
                         <Route path="/tokens" component={TokensContainer} />
                         <Route path="/request/:id" component={LoanRequestContainer} />
                         <Route path="/investments" component={InvestmentsContainer} />
+                        {/* <Route path="/home" component={HomeContainer} /> */}
                     </Switch>
                 </Grid>
             </main>
