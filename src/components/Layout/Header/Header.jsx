@@ -16,7 +16,7 @@ class Header extends Component {
 
                 <Nav>
                     <LinkContainer to="/campaing" exact={true}>
-                        <NavItem>Creat Campaign</NavItem>
+                        <NavItem>Create Campaign</NavItem>
                     </LinkContainer>
                     <LinkContainer to="/" exact={true}>
                         <NavItem>Fund Projects</NavItem>

@@ -1,8 +1,8 @@
 import * as Web3 from 'web3'
 import * as EthereumTX from 'ethereumjs-tx'
 
-import config from '../../config'
-import * as Abi from './abi'
+// import config from './config'
+// import * as Abi from './abi'
 
 
 /**
@@ -12,7 +12,7 @@ import * as Abi from './abi'
  * @param from              Owner Address
  * @param data              params for contract
  */
-const _generateFunctionAbi = (contractFunction, from, data) => contractFunction.getData(...data, { from })
+export const _generateFunctionAbi = (contractFunction, from, data) => contractFunction.getData(...data, { from })
 
 
 /**
@@ -20,9 +20,10 @@ const _generateFunctionAbi = (contractFunction, from, data) => contractFunction.
  *
  * @param data    object with transaction params
  */
-const _generateSignedTransaciton = (data) => {
+export const _generateSignedTransaciton = (data) => {
   const { contractAddress, ownerAddress, nonce, functionAbi } = data
-  const privateKey = new Buffer(`${config('BITWORDS_WALLET_PRIVATE_KEY')}`, 'hex')
+  // const privateKey = new Buffer(`${config('BITWORDS_WALLET_PRIVATE_KEY')}`, 'hex')
+  // get private keys or signed tarnsaction from metamask
 
   const txParams = {
     gasPrice: 11 * 1000000000, // 11 gwei
@@ -34,7 +35,7 @@ const _generateSignedTransaciton = (data) => {
   }
 
   const tx = new EthereumTX(txParams)
-  tx.sign(privateKey)
+  // tx.sign(privateKey)
 
   return tx.serialize()
 }
@@ -46,13 +47,21 @@ const _generateSignedTransaciton = (data) => {
  * @param web3          web3js client
  * @param serializedTx  signed transaction
  */
-const _executeSignedTransaction = async (web3, serializedTx) => {
+export const _executeSignedTransaction = async (web3, serializedTx) => {
   await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), async (err, hash) => {
     if (!err) console.log(hash)
     else console.log(err)
   })
 }
 
+/** 
+ * Helper to get balace
+ *
+ * @param address adress to get balance of
+ */
+export const getBalance = async (web3) => web3.eth.accounts[0]
+
+// export const getBalFromAddr = (address) => window.web3.eth.getBalance(address)
 
 /**
  * Makes a call to the chargeAdvertisers fn in the smart contract.
@@ -63,25 +72,30 @@ const _executeSignedTransaction = async (web3, serializedTx) => {
  * @param publishersToCredit  A special array of indexes from the publishers array, used to point out publishers
  *                            who want to credit their payouts back into bitwords, so that they can use it for ads.
  */
-export const contractFuncitonCall = async (amountsInEther) => {
+export const contractFuncitonCall = async (amountsInEther, contractAddress, ownerAddress) => {
   try {
     // Convert the amounts into wei first
-    const amountsEthToWei = Math.floor(Math.pow(10, 18) * amountsInEther)
+    const amountsEthToWei = Math.floor(Math.pow(10, 18) * amountsInEther) || web3.toWei(amountsInEther, 'ether')
 
     // create a web3js client
-    // @ts-ignore
-    const web3 = new Web3(new Web3.providers.HttpProvider(config('WEB3JS_URL')))
+    const web3 = window.web3;
 
-    const contractAddress = `${config('CONTRACT_ADDRESS')}`
-    const ownerAddress = `${config('WALLET_ADDRESS')}`
+    if (!web3 || !web3.isConnected() 
+    || !web3.currentProvider.isMetaMask) console.log('erorr')
+
+    const account = web3.eth.accounts[0];
+
+    if (!account) console.log('No account!')
 
     // create contract instance from the contract abi 
-    const bitwordsContract = new web3.eth.Contract(ABI, contractAddress)
+    // create abi
+    const ABI = ''
+    const Contract = new web3.eth.Contract(ABI, contractAddress)
 
     // Get the function's ABI
-    const functionAbi = bitwordsContract.methods
+    const functionAbi = Contract.methods
     // add params 
-      .chargeAdvertisers(amountsEthToWei)
+      .funcitonMethod(amountsEthToWei)
       .encodeABI({ from: ownerAddress })
       // .call({ from: ownerAddress })
 
@@ -100,7 +114,7 @@ export const contractFuncitonCall = async (amountsInEther) => {
 // invoking metamask for making transaction 
 export const depositToPool = (pool, ethAmount) => {
   return new Promise((resolve, reject) => {
-    const web3 = window.web3;
+    const web3 = window.web3; 
     const poolAddress = pool;
     const amountWei = web3.toWei(ethAmount, 'ether');
 
@@ -128,3 +142,47 @@ export const depositToPool = (pool, ethAmount) => {
     });
   });
 };
+
+
+
+
+export const sendETH = (amount, to, data, web3) => {
+  return new Promise((resolve, reject) => {
+    web3.eth.sendTransaction({
+      to: to,
+      value: web3.toWei(amount, 'ether'),
+      data
+    }, (error, hash) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(hash);
+    })
+  });
+}
+
+export const signTx = (data, address, web3) => web3.eth.sign(data, address)
+
+export const sendTxWeb3 = (data, address, web3) => web3.sendTransaction
+
+export const callFunctions = async (abi, contractAddress, Accountaddress, data, web3) => {
+  const contractAbi = web3.eth.contract(abi);
+  const myContract = contractAbi.at(contractAddress);
+
+  // suppose you want to call a function named myFunction of myContract
+  const getData = myContract.generateNewCrowdfund.getData(...data);
+  //finally paas this data parameter to send Transaction
+  await web3.eth.sendTransaction({to:contractAddress, from:Accountaddress, data: getData});
+}
+
+
+export const makeContrib = async (Abi, contractAddress, Accountaddress, value, web3) => {
+  const contractAbi = web3.eth.contract(Abi);
+  const myContract = contractAbi.at(contractAddress);
+
+  // suppose you want to call a function named myFunction of myContract
+  const getData = myContract.buyTokens.getData(Accountaddress);
+  //finally paas this data parameter to send Transaction
+  await web3.eth.buyTokens({to:contractAddress, from:Accountaddress, value});
+}

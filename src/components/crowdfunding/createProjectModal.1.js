@@ -18,16 +18,23 @@ class CreateProjectModal extends Component {
         this.state = initialState;
     }
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    handleChange = (e, { name, value }) => {
+        this.setState({ [name]: value })
+        // localStorage.setItem('campaing|contract', value)
+    }
 
     handleClose = () => {
         this.props.onCloseModal();
-        this.setState(initialState);
+        // this.setState(initialState);
     }
 
     handleCreate = () => {
-        this.props.onHandleProjectCreate(this.state);
-        this.setState(initialState);
+        // this.props.onHandleProjectCreate(this.state);
+        // this.setState(initialState);
+
+        // save the deatails and create the dao contract 
+        localStorage.setItem('self', this.state)
+        console.log(localStorage.getItem('self'))
     }
 
     render () {

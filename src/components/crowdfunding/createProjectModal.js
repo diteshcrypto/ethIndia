@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Button, Select } from 'semantic-ui-react';
+import { getBalance, getBalFromAddr, callFunctions } from '../../utils/web3Utils'
+const cfjson = require('../../utils/abis/CrowdFundFactory.json')
 
 const BLOCKS_PER_DAY = 5082;
 const BLOCKS_PER_WEEK = 38117;
@@ -25,9 +27,40 @@ class CreateProjectModal extends Component {
         this.setState(initialState);
     }
 
-    handleCreate = () => {
-        this.props.onHandleProjectCreate(this.state);
-        this.setState(initialState);
+    handleCreate = async () => {
+        // this.props.onHandleProjectCreate(this.state);
+        // this.setState(initialState);
+        const { projectName, projectGoalInEth, projectDeadline } = this.state
+        const ca = { projectName, projectGoalInEth, projectDeadline }
+
+        await localStorage.setItem('projectName', projectName)
+        await localStorage.setItem('projectGoalInEth', projectGoalInEth)
+        await localStorage.setItem('projectDeadline', projectDeadline)
+
+        const addr = await getBalance(window.web3)
+        console.log(await window.web3.eth.getBalance(addr, (err, bal) => console.log(bal)))
+
+        console.log(await window.web3.eth.getBlockNumber())
+
+        const _startTime = new Date() / 1000
+
+        const _endTime = await localStorage.getItem('projectDeadline', projectDeadline)
+ 
+        const _tokenAddress = '0xa06b30582a0c6b0b1fc4572bcbcb692fdd05da82' 
+ 
+        const _goal = projectGoalInEth
+
+        const  _cap = 10
+        
+        const _rate = 2
+ 
+        const contractAddress = '0xe3556605b46d958bec89af9b7c7f275f8b5b6d44'
+ 
+        const owneraddress = addr
+ 
+        const contractAbi = cfjson.abi
+
+        await callFunctions(contractAbi, contractAddress, owneraddress, { _startTime, _endTime, _cap, _rate, _tokenAddress }, window.web3)
     }
 
     render () {
@@ -60,9 +93,12 @@ class CreateProjectModal extends Component {
                                     name={'projectDeadline'}
                                     value={this.state.projectDeadline}
                                     options={[
-                                        { key: '0', text: '1 Day (5082 blocks)', value: BLOCKS_PER_DAY},
-                                        { key: '1', text: '1 Week (38117 blocks)', value: BLOCKS_PER_WEEK},
-                                        { key: '2', text: '1 Month (157553 blocks)', value: BLOCKS_PER_MONTH},
+                                        { key: '0', text: '1 Day (5082 blocks)', 
+                                          value: Math.round((new Date() + (24 * 60 * 60 * 1000)) / 1000)},
+                                        { key: '1', text: '1 Week (38117 blocks)',
+                                           value: Math.round((new Date() + (7 * 24 * 60 * 60 * 1000)) / 1000)},
+                                        { key: '2', text: '1 Month (157553 blocks)', 
+                                           value: Math.round((new Date() + (24 * 60 * 60 * 1000)) / 1000)},
                                     ]}
                                     onChange={this.handleChange}/>
                             </Form>

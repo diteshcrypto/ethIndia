@@ -1,0 +1,99 @@
+{
+  "_from": "collaterized-crowdfunding",
+  "_id": "collaterized-crowdfunding@0.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-6ICUuwQlHcs6tpkPZubD/H/iX1eqtYqfR5EkRGAj2vt9HUuv2qCfSiswUvFqqw0EvfzppxC8wWG2CaSU6cQ5yA==",
+  "_location": "/collaterized-crowdfunding",
+  "_phantomChildren": {
+    "bn.js": "4.11.6",
+    "color-convert": "1.9.2",
+    "escape-string-regexp": "1.0.5",
+    "eth-lib": "0.1.27",
+    "ethjs-unit": "0.1.6",
+    "number-to-bn": "1.7.0",
+    "randomhex": "0.1.5",
+    "underscore": "1.8.3",
+    "web3-bzz": "1.0.0-beta.35",
+    "web3-core": "1.0.0-beta.35",
+    "web3-eth": "1.0.0-beta.35",
+    "web3-eth-personal": "1.0.0-beta.35",
+    "web3-net": "1.0.0-beta.35",
+    "web3-shh": "1.0.0-beta.35"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "collaterized-crowdfunding",
+    "name": "collaterized-crowdfunding",
+    "escapedName": "collaterized-crowdfunding",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/collaterized-crowdfunding/-/collaterized-crowdfunding-0.1.0.tgz",
+  "_shasum": "b202109eda57792f355eee8ce5b8338162df15a3",
+  "_spec": "collaterized-crowdfunding",
+  "_where": "/Users/newsgate/cc/ethIn/relayer-kit",
+  "author": {
+    "name": "ETHengers"
+  },
+  "bugs": {
+    "url": "https://github.com/satyamakgec/CollaterizedCrowdfunding/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "babel-polyfill": "6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-preset-stage-3": "6.24.1",
+    "babel-register": "^6.26.0",
+    "bignumber.js": "^5.0.0",
+    "chalk": "^2.4.1",
+    "coveralls": "^3.0.1",
+    "ethereumjs-testrpc": "^6.0.3",
+    "material-ui": "^0.20.2",
+    "openzeppelin-solidity": "^1.11.0",
+    "truffle-hdwallet-provider": "0.0.6",
+    "web3": "^1.0.0-beta.33"
+  },
+  "deprecated": false,
+  "description": "Use to raise more fund using the collaterized technique",
+  "devDependencies": {
+    "ganache-cli": "^6.1.6",
+    "sol-merger": "^0.1.2"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/satyamakgec/CollaterizedCrowdfunding#readme",
+  "keywords": [
+    "smart",
+    "contracts",
+    "solidity",
+    "ethereum",
+    "crowdfund",
+    "dharma",
+    "dai"
+  ],
+  "license": "ISC",
+  "main": "truffle.js",
+  "name": "collaterized-crowdfunding",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satyamakgec/CollaterizedCrowdfunding.git"
+  },
+  "scripts": {
+    "compile": "truffle compile --optimize-runs 200",
+    "flatten": "sol-merger './contracts/*.sol' ./flat",
+    "ganache-cli": "ganache-cli -i 15 --gasLimit 90000000",
+    "migrate:kovan": "truffle migrate --network=kovan --reset --all",
+    "migrate:local": "truffle migrate --network=development --reset --all",
+    "migrate:ropsten": "truffle migrate --network=ropsten --reset --all",
+    "test": "scripts/test.sh"
+  },
+  "version": "0.1.0"
+}
