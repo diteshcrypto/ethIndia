@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
-import { getEtherscanLink } from '../utils/web3Utils';
+// import { getEtherscanLink } from '../utils/web3Utils';
+
+const contributions = [{ contributor: 'test', amount: 10 }, { contributor: 'test2', amount: 15 }, { contributor: 'test3', amount: 20 }]
 
 class ContributionList extends Component {
     render() {
-        const { contributions, isLoading } = this.props;
+        const { isLoading } = this.props;
         
         return (
             <Table celled padded >
@@ -19,7 +21,8 @@ class ContributionList extends Component {
                     {contributions.map((contribution, index) => (
                         <Table.Row key={index}>
                             <Table.Cell>
-                                <a href={getEtherscanLink(contribution.contributor)}>{contribution.contributor}</a>
+                                {/* <a href={getEtherscanLink(contribution.contributor)}>{contribution.contributor}</a> */}
+                                {contribution.contributor}
                             </Table.Cell>
                             <Table.Cell>
                                 {contribution.amount} ETH
@@ -30,10 +33,6 @@ class ContributionList extends Component {
             </Table>
         );
     }
-}
-
-ContributionList.PropTypes = {
-    contributions: React.PropTypes.array.isRequired,
 }
 
 export default ContributionList;

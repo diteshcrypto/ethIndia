@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Layout from "./components/Layout/Layout";
+import 'semantic-ui-css/semantic.min.css';
 
 
 import "./App.css";

@@ -78,12 +78,4 @@ class CreateProjectModal extends Component {
     }
 }
 
-CreateProjectModal.PropTypes = {
-    isDisplayed: React.PropTypes.bool.isRequired,
-    gasCost: React.PropTypes.number.isRequired,
-    currentBlock: React.PropTypes.number.isRequired,
-    onCloseModal: React.PropTypes.func.isRequired,
-    onHandleProjectCreate: React.PropTypes.func.isRequired,
-}
-
 export default CreateProjectModal;

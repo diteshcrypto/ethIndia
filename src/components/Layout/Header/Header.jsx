@@ -11,16 +11,22 @@ class Header extends Component {
         return (
             <Navbar>
                 <Navbar.Header>
-                    <Navbar.Brand>Dharma Relayer</Navbar.Brand>
+                    <Navbar.Brand><div style={{ color: 'black' }}>Ethunders</div></Navbar.Brand>
                 </Navbar.Header>
 
                 <Nav>
+                    <LinkContainer to="/campaing" exact={true}>
+                        <NavItem>Creat Campaign</NavItem>
+                    </LinkContainer>
                     <LinkContainer to="/" exact={true}>
-                        <NavItem>Browse</NavItem>
+                        <NavItem>Fund Projects</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/lend">
+                        <NavItem>Lend</NavItem>
                     </LinkContainer>
 
                     <LinkContainer to="/create">
-                        <NavItem>Create</NavItem>
+                        <NavItem>Collatralize</NavItem>
                     </LinkContainer>
 
                     <LinkContainer to="/tokens">

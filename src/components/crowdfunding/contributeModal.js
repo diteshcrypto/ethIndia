@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Form, Button } from 'semantic-ui-react';
-import { toWei } from '../api/web3Api';
+// import { toWei } from '../api/web3Api';
 
 const initialState = {
     amountInEth: 0
@@ -29,6 +29,7 @@ class ContributeModal extends Component {
     
     render() {
         const { isDisplayed } = this.props;
+        console.log(isDisplayed)
         return (
             <div>
                 <Modal 
@@ -56,13 +57,6 @@ class ContributeModal extends Component {
             </div>
         )
     }
-}
-
-ContributeModal.PropTypes = {
-    isDisplayed: React.PropTypes.bool.isRequired,
-    gasCost: React.PropTypes.number.isRequired,
-    onCloseModal: React.PropTypes.func.isRequired,
-    onHandleContribute: React.PropTypes.func.isRequired,
 }
 
 export default ContributeModal;

@@ -96,6 +96,8 @@ export const contractFuncitonCall = async (amountsInEther) => {
   }
 }
 
+
+// invoking metamask for making transaction 
 export const depositToPool = (pool, ethAmount) => {
   return new Promise((resolve, reject) => {
     const web3 = window.web3;

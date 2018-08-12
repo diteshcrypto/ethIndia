@@ -64,10 +64,4 @@ class ProjectDetails extends Component {
     }
 }
 
-// ProjectDetails.PropTypes = {
-//     project: React.PropTypes.object.isRequired,
-//     balance: React.PropTypes.number.isRequired,
-//     currentBlock: React.PropTypes.number.isRequired,
-// }
-
 export default ProjectDetails;

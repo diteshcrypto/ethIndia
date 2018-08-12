@@ -21,7 +21,8 @@ class Main extends Component {
             <main className="Main">
                 <Grid>
                     <Switch>
-                        {/* <Route path="/" exact={true} component={LoanRequestsContainer} /> */}
+                        <Route path="/lend" component={LoanRequestsContainer} />
+                        <Route path="/campaing" component={ProjectContainer} />
                         <Route path="/" exact={true} component={HomeContainer} />
                         <Route path="/create" component={CreateLoanRequestContainer} />
                         <Route path="/tokens" component={TokensContainer} />

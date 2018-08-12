@@ -57,10 +57,4 @@ class ProjectCard extends Component {
     }
 }
 
-// ProjectCard.PropTypes = {
-//     project: React.PropTypes.object.isRequired,
-//     isLoading: React.PropTypes.bool.isRequired,
-//     onContributeClicked: React.PropTypes.func.isRequired,
-// }
-
 export default ProjectCard;
