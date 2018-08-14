@@ -1,20 +1,10 @@
-import debug from 'debug'
 import Dagger from 'eth-dagger'
 import * as _ from 'underscore'
 
-import config from '../../config'
-
-import * as Email from '../../libraries/email'
-import * as Slack from '../../libraries/slack'
-import Advertisements from '../../models/advertisement'
-import ContractEventLogs from '../../models/contractEventLogs'
-import Users from '../../models/users'
+// import config from '../../config'
 
 
-const logger = debug('app:library:ethereum:dagger')
-
-
-const _normalizeETHAddress = (address: string) => address.replace(/^0x0+/, '0x').toLowerCase()
+const _normalizeETHAddress = (address) => address.replace(/^0x0+/, '0x').toLowerCase()
 
 
 // Different events from the smart contract
@@ -26,42 +16,12 @@ const crowdFundFactory = '0x31ee7ff75889d1d4de242ca18265af6c6fd488ab'
 
 
 
-interface IEvent {
-  topics: string[]
-  address: string
-  transactionHash: string
-  data: any
-}
-
-
-/**
- * To add log about any contract events
- *
- * @param eventType name of the event
- * @param event contains the event data
- */
-const addContractEventLog = async (eventType: string, event: IEvent, amount?: number) => {
-  const newContractEventLog = new ContractEventLogs({
-    walletAddress: _normalizeETHAddress(event.topics[1]),
-    eventAddress: event.topics[0],
-    eventTopics: event.topics,
-    data: event.data,
-    amount,
-    eventType,
-    transactionAddress: _normalizeETHAddress(event.address),
-    transactionHash: event.transactionHash
-  })
-
-  newContractEventLog.save()
-}
-
-
 /**
  * Helper function to properly credit an advertiser
  *
  * @param event The smart contract event
  */
-const creditAdvertiser = async (event: IEvent) => {
+const creditAdvertiser = async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
 
   const rawAmount = event.data.substr(2, 64)
@@ -88,7 +48,7 @@ const creditAdvertiser = async (event: IEvent) => {
  *
  * @param event The smart contract event
  */
-const payoutToPublisher = async (event: IEvent) => {
+const payoutToPublisher = async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
   const revenue = parseInt(event.data.toString(16), 16) / Math.pow(10, 18)
 
@@ -108,7 +68,7 @@ const payoutToPublisher = async (event: IEvent) => {
  *
  * @param event The smart contract event.
  */
-const refundAdvertiserRequested =  async (event: IEvent) => {
+const refundAdvertiserRequested =  async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
   const amount = parseInt(event.data.toString(16), 16) / Math.pow(10, 18)
 
@@ -123,7 +83,7 @@ const refundAdvertiserRequested =  async (event: IEvent) => {
  * This function is called when an advertiser's refund request is processed. This causes
  * the advertiser's balance to get updated and his ads to stop running if his balance is low
  */
-const refundAdvertiserProcessed = async (event: IEvent) => {
+const refundAdvertiserProcessed = async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
 
   const rawAmount = event.data.substr(2, 64)
@@ -139,7 +99,7 @@ const refundAdvertiserProcessed = async (event: IEvent) => {
 }
 
 
-const deductAdvertiser = async (event: IEvent) => {
+const deductAdvertiser = async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
 
   const rawAmount = event.data.substr(2, 64)
@@ -150,7 +110,7 @@ const deductAdvertiser = async (event: IEvent) => {
 }
 
 
-const transferPublisherCreditsToAdvertiserBalance = async (event: IEvent) => {
+const transferPublisherCreditsToAdvertiserBalance = async (event) => {
   const targetAddress = _normalizeETHAddress(event.topics[1])
   const revenue = parseInt(event.data.toString(16), 16) / Math.pow(10, 18)
 
@@ -164,7 +124,7 @@ export const init = () => {
   // Get details of the smart contract
   const smartContractAddress = `${config('BITWORDS_CONTRACT_ADDRESS')}`
 
-  dagger.on(`latest:log/${smartContractAddress}`, (events: IEvent[]) => {
+  dagger.on(`latest:log/${smartContractAddress}`, (events) => {
     // events should not be repeated
     events.map(event => {
       if (event.topics.includes(DEPOSIT_EVENT)) {
